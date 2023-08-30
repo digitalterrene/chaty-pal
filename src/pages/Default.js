@@ -442,7 +442,7 @@ export default function Default() {
                                   }}
                                   alt="No Avatar"
                                   src={
-                                    d && user.uid === d.requester
+                                    d && user && user.uid === d.requester
                                       ? d.acc_image
                                       : d.req_image
                                   }

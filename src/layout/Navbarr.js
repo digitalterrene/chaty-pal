@@ -10,17 +10,29 @@ import {
 import { useRouter } from "next/navigation";
 import { useAuthContext } from "@/context/AuthContext";
 import { doc, onSnapshot } from "firebase/firestore";
-import { db } from "@/app/firebase";
+import { auth, db } from "@/app/firebase";
+import { Toaster, toast } from "react-hot-toast";
 export default function Navbarr() {
   const { user } = useAuthContext();
   const router = useRouter();
   const [data, setData] = useState({});
-  const logout = () => {
-    localStorage.removeItem("chaty_pals_user");
 
-    router.push("/user/signin");
+  const logout = async () => {
+    const toastId = toast.loading("Logging user out...");
+
+    try {
+      await auth.signOut(); // Log out the user
+      toast.success("User successfully logged out", {
+        id: toastId,
+      });
+      router.push("/");
+    } catch (error) {
+      toast.error("Failed to logout user", {
+        id: toastId,
+      });
+      console.error("Error logging out:", error);
+    }
   };
-
   //fetching user data in realtime
   useEffect(() => {
     if (user) {
@@ -79,6 +91,7 @@ export default function Navbarr() {
           )}
         </button>
       </div>
+      <Toaster />
     </header>
   );
 }
