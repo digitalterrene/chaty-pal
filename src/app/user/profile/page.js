@@ -1,10 +1,11 @@
-import Default from "@/pages/Deafault";
+import Edit from "@/pages/Edit";
 import React from "react";
+import Profile from "./Profile";
 
 export default function page() {
   return (
     <div>
-      <Default />
+      <Profile />
     </div>
   );
 }
