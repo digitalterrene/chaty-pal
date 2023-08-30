@@ -31,7 +31,6 @@ export default function Signup() {
   const provider = new GoogleAuthProvider();
   const [error, setError] = useState(false);
   const [inputs, setInputs] = useState({ name: "", surname: "" });
-  const { dispatch, user } = useAuthContext();
   const handleGoogleSignup = () => {
     signInWithPopup(auth, provider)
       .then((result) => {
@@ -79,12 +78,6 @@ export default function Signup() {
             toast.success("User successfuly logged in", {
               id: toastId,
             });
-
-            localStorage.setItem(
-              "chaty_pals_user",
-              JSON.stringify(docSnap.data())
-            );
-            dispatch({ type: "LOGIN", payload: docSnap.data() });
           } else {
             // docSnap.data() will be undefined in this case
             console.log("No such user!");

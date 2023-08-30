@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import logo from "@/assets/layout/logo.png";
 import { BiSolidUserCircle } from "react-icons/bi";
 import { FaUserPlus } from "react-icons/fa";
@@ -9,15 +9,28 @@ import {
 } from "react-icons/hi2";
 import { useRouter } from "next/navigation";
 import { useAuthContext } from "@/context/AuthContext";
+import { doc, onSnapshot } from "firebase/firestore";
+import { db } from "@/app/firebase";
 export default function Navbarr() {
   const { user } = useAuthContext();
   const router = useRouter();
-
+  const [data, setData] = useState({});
   const logout = () => {
     localStorage.removeItem("chaty_pals_user");
 
     router.push("/user/signin");
   };
+
+  //fetching user data in realtime
+  useEffect(() => {
+    if (user) {
+      const unsub = onSnapshot(doc(db, "users", `${user.uid}`), (doc) => {
+        setData(doc.data());
+        //console.log("sdfersfes");
+      });
+      return unsub;
+    }
+  }, [user]);
   return (
     <header
       style={{
@@ -43,15 +56,27 @@ export default function Navbarr() {
         >
           <p>{user && user.uid ? "Logout" : "Login"}</p>
         </button>
+        <h6 style={{ marginLeft: 10 }} className="font-bold hidden lg:block">
+          {data && data.username && data.username}
+        </h6>
         <button
           onClick={() => router.push(`/user/profile`)}
-          style={{ borderRadius: 10, padding: 8 }}
+          style={{ borderRadius: 10 }}
           className="hover:bg-gray-100      bg-gray-50"
         >
-          <BiSolidUserCircle
-            style={{ fontSize: 30, color: "#8E90EA" }}
-            className=" text-gray-100"
-          />
+          {data && data.image ? (
+            <img
+              width={50}
+              height={50}
+              className="object-center object-cover"
+              src={data.image}
+            />
+          ) : (
+            <BiSolidUserCircle
+              style={{ fontSize: 30, color: "#8E90EA" }}
+              className=" text-gray-100"
+            />
+          )}
         </button>
       </div>
     </header>

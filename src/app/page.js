@@ -1,4 +1,4 @@
-import Default from "@/pages/Deafault";
+import Default from "@/pages/Default";
 import React from "react";
 
 export default function page() {

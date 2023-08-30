@@ -6,8 +6,10 @@ import { Toaster, toast } from "react-hot-toast";
 import { doc, onSnapshot, updateDoc } from "firebase/firestore";
 import { db } from "@/app/firebase";
 import { useAuthContext } from "@/context/AuthContext";
+import no_user from "@/assets/pages/no_user.png";
+import { BsThreeDotsVertical } from "react-icons/bs";
 export default function Edit({ id }) {
-  // const { user } = useAuthContext();
+  const { user } = useAuthContext();
   const [inputs, setInputs] = useState({});
   const router = useRouter();
   const [data, setData] = useState();
@@ -64,7 +66,7 @@ export default function Edit({ id }) {
     if (id) {
       const unsub = onSnapshot(doc(db, "users", `${id}`), (doc) => {
         setData(doc.data());
-        console.log("sdfersfes");
+        //console.log("sdfersfes");
       });
       return unsub;
     }
@@ -121,11 +123,52 @@ export default function Edit({ id }) {
 
   return (
     <section className="bg-white">
+      {/* Header starts here */}
+      <div
+        style={{
+          borderBottom: "1px solid lightgray",
+          paddingLeft: 20,
+          paddingRight: 20,
+          backgroundColor: "lightgray",
+        }}
+        className="flex sticky top-0 justify-between"
+      >
+        <div
+          style={{ padding: 5, cursor: "pointer", borderRadius: 10 }}
+          className="flex    cursor-pointer hover:bg-gray-100"
+        >
+          <img
+            style={{
+              width: 40,
+              marginRight: 6,
+              borderRadius: 10,
+              height: 40,
+            }}
+            src={data && data.image ? data.image : no_user.src}
+            alt="no image"
+          />
+          <div>
+            <h6 className="font-bold">
+              {data && data.username ? data.username : "User Name"}
+            </h6>
+            <p className="text-xs">
+              {data && data.position ? data.position : "Postion"}
+            </p>
+          </div>
+        </div>
+        <button
+          style={{ borderRadius: 10, height: 40, width: 40 }}
+          className="hover:bg-gray-100  my-auto justify-center flex items-center   "
+        >
+          <BsThreeDotsVertical />
+        </button>
+      </div>
+      {/* Header ends here  */}
       <div className="mx-auto max-w-screen-xl  px-4 py-16 sm:px-6 lg:px-8">
         <div className="grid   grid-cols-1 gap-x-16 gap-y-8 lg:grid-cols-5">
-          <div className="lg:col-span-2      ">
+          <div className="lg:col-span-2    ">
             {/* Profile card starts here */}
-            <div className="flex flex-col    mb-8 justify-start shadow-md rounded-xl sm:px-12 dark:bg-gray-900 dark:text-gray-100">
+            <div className="flex flex-col  border w-[300px] h-[350px]  mb-8 justify-center shadow-md rounded-xl sm:px-12 dark:bg-gray-900 dark:text-gray-100">
               <img
                 src={
                   data && data.image
@@ -162,7 +205,7 @@ export default function Edit({ id }) {
             </div>
           </div>
 
-          <div className="rounded-lg bg-white p-8 shadow-lg lg:col-span-3 lg:p-12">
+          <div className="rounded-lg bg-white border p-8 shadow-lg lg:col-span-3 lg:p-12">
             <div className="space-y-4">
               <div>
                 <input

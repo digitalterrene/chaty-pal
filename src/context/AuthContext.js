@@ -2,6 +2,7 @@
 import React from "react";
 import { onAuthStateChanged, getAuth } from "firebase/auth";
 import { auth } from "@/app/firebase";
+import AppLoading from "@/layout/AppLoading";
 
 export const AuthContext = React.createContext({});
 
@@ -26,7 +27,15 @@ export const AuthContextProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider value={{ user }}>
-      {loading ? <div>Loading...</div> : children}
+      <div>
+        {loading ? (
+          <div style={{ marginTop: 400 }}>
+            <AppLoading />
+          </div>
+        ) : (
+          children
+        )}
+      </div>
     </AuthContext.Provider>
   );
 };
