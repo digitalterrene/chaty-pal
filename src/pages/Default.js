@@ -28,6 +28,7 @@ import {
 } from "firebase/firestore";
 import chat_prompt from "@/assets/pages/chat.jpg";
 import { useAuthContext } from "@/context/AuthContext";
+import { toast } from "react-hot-toast";
 export default function Default() {
   const [activeChat, setActiveChat] = useState({});
   const [closeSidebar, setCloseSidebar] = useState(false);
@@ -46,6 +47,23 @@ export default function Default() {
   const [messages, setMessages] = useState([]);
   const [requestedToChat, setRequestedToChat] = useState({});
 
+  const refuseUnAuthorizedUsers = () => {
+    const toastId = toast.loading("Checking authentication");
+
+    if (!user) {
+      setTimeout(() => {
+        toast.error("Please login first", {
+          id: toastId,
+        });
+      }, 3000);
+      setTimeout(() => {
+        router.push("/user/signin");
+      }, 5000);
+    }
+  };
+  useEffect(() => {
+    refuseUnAuthorizedUsers();
+  }, [user]);
   //formating timestamps
   // Check if two dates are the same day
   const isSameDay = (date1, date2) => {
