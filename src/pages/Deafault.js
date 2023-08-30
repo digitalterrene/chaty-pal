@@ -8,7 +8,6 @@ import {
 import Sidebarr from "@/layout/Sidebarr";
 import { FiSearch } from "react-icons/fi";
 import { BsSend, BsThreeDotsVertical } from "react-icons/bs";
-import { useActiveProfileContext } from "@/context/ActiveProfileContext";
 import { useRouter } from "next/navigation";
 import Edit from "./Edit";
 import { auth, db } from "@/app/firebase";
@@ -28,7 +27,6 @@ export default function Default() {
   const [activeChat, setActiveChat] = useState({});
   const [activeContact, setActiveContact] = useState({});
   const [isChatInView, setIsChatInView] = useState(true);
-  const { profile, setProfile } = useActiveProfileContext();
   const { dispatch, user } = useAuthContext();
   const [data, setData] = useState({});
   const [headerInfo, setHeaderInfo] = useState({});
@@ -113,9 +111,8 @@ export default function Default() {
           id: `${requestedToChat.id}`,
           position: `${requestedToChat.position}`,
           accepter: `${requestedToChat.id}`,
-          requester: `${profile.id}`,
+          requester: `${user._id}`,
           chat_image: `${requestedToChat.image}`,
-          peers: [profile, requestedToChat],
         });
       }
     }
@@ -124,8 +121,8 @@ export default function Default() {
     await addDoc(collection(db, "msgs"), {
       msg,
       chat_id: `${activeChat.id}`,
-      sender_image: `${profile.image}`,
-      sender_id: `${profile.id}`,
+      sender_image: `${user.image}`,
+      sender_id: `${user.id}`,
     });
     setMsg("");
     //updating the latest message in the chat
@@ -483,15 +480,6 @@ export default function Default() {
                     >
                       <div
                         onClick={() => {
-                          setProfile({
-                            username,
-                            image,
-                            id,
-                            desc,
-                            position,
-                            email,
-                            mobile,
-                          });
                           setIsChatInView(false);
                           setHeaderInfo({
                             username,

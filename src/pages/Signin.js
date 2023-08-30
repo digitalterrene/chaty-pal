@@ -8,7 +8,6 @@ import {
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/app/firebase";
 import { useRouter } from "next/navigation";
-import { useActiveProfileContext } from "@/context/ActiveProfileContext";
 import { Toaster, toast } from "react-hot-toast";
 import { useAuthContext } from "@/context/AuthContext";
 

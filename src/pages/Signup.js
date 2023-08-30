@@ -8,7 +8,6 @@ import {
   createUserWithEmailAndPassword,
   signInWithPopup,
 } from "firebase/auth";
-import { useActiveProfileContext } from "@/context/ActiveProfileContext";
 import { auth, db } from "@/app/firebase";
 import { Toaster, toast } from "react-hot-toast";
 import { useAuthContext } from "@/context/AuthContext";
@@ -29,7 +28,6 @@ const ErrorComponent = () => {
   );
 };
 export default function Signup() {
-  const { profile, setProfile } = useActiveProfileContext();
   const provider = new GoogleAuthProvider();
   const [error, setError] = useState(false);
   const [inputs, setInputs] = useState({ name: "", surname: "" });
