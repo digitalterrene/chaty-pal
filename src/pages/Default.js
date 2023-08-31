@@ -49,7 +49,6 @@ export default function Default() {
 
   const refuseUnAuthorizedUsers = () => {
     const toastId = toast.loading("Checking authentication");
-
     if (!user) {
       setTimeout(() => {
         toast.error("Please login first", {
@@ -60,6 +59,9 @@ export default function Default() {
         router.push("/user/signin");
       }, 5000);
     }
+    setTimeout(() => {
+      toast.dismiss();
+    }, 5000);
   };
   useEffect(() => {
     refuseUnAuthorizedUsers();
