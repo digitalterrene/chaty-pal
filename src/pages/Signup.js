@@ -10,6 +10,7 @@ import {
 } from "firebase/auth";
 import { auth, db } from "@/app/firebase";
 import { Toaster, toast } from "react-hot-toast";
+import { useRouter } from "next/navigation";
 import { useAuthContext } from "@/context/AuthContext";
 const ErrorComponent = () => {
   return (
@@ -31,6 +32,7 @@ export default function Signup() {
   const provider = new GoogleAuthProvider();
   const [error, setError] = useState(false);
   const [inputs, setInputs] = useState({ name: "", surname: "" });
+  const router = useRouter();
   const handleGoogleSignup = () => {
     signInWithPopup(auth, provider)
       .then((result) => {
@@ -78,6 +80,7 @@ export default function Signup() {
             toast.success("User successfuly logged in", {
               id: toastId,
             });
+            router.push("/");
           } else {
             // docSnap.data() will be undefined in this case
             console.log("No such user!");
